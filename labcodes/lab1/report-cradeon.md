@@ -2,6 +2,7 @@
 
 1. 操作系统镜像文件 ucore.img 是如何一步一步生成的?(需要比较详细地解释 Makefile 中
 每一条相关命令和命令参数的含义,以及说明命令导致的结果)
+
 + cc kern/init/init.c
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
 
@@ -165,16 +166,17 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 # 练习4
 通过分析源代码和通过qemu来运行并调试bootloader&OS，
 1. bootloader如何读取硬盘扇区的？
-首先一直等待直到硬盘空闲，然后向0x1f2写入1表示一个扇区,0x1f3-0x1f6位置写入secno表示扇区的
-
-编号,0x1f7写入0x20表示读取。再一直等待直到硬盘准备好，最后从0x1f0开始读取数据。
+首先一直等待直到硬盘空闲，然后向0x1f2写入1表示一个扇区,0x1f3-0x1f6位置写入secno表示扇区的编号,0x1f7写入0x20表示读取。再一直等待直到硬盘准备好，最后从0x1f0开始读取数据。
 
 2. bootloader是如何加载ELF格式的OS？
-首先读取硬盘的第二个扇区即kernel的第一部分，包括elfheader。然后判断魔数是否为ELF_MAGIC。是
+首先读取硬盘的第二个扇区即kernel的第一部分，包括elfheader。然后判断魔数是否为ELF_MAGIC。是的话再读取program header和end program header作为起始和结束位置。最后依次读取后边扇区的内容，进入内核的入口函数entry。
 
-的话再读取program header和end program header作为起始和结束位置。最后依次读取后边扇区的内容
-
-，进入内核的入口函数entry。
+# 练习5
+请完成实验，看看输出是否与上述显示大致一致，并解释最后一行各个数值的含义。  
+与上述显示大致一致。  
+最后一行ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8
+ebp是由于堆栈从0x7c00开始，压入了两个元素，eip指向的是((void (*)(void))(ELFHDR->e_entry & 0xFFFFFF))();的下一条语句即outw(0x8A00, 0x8A00);的地址  
+后边的四个参数是Bootloader起始地址0x7c00开始的几条指令的机器码
 
 # 练习6
 中断向量表中一个表项占多少字节？其中哪几位代表中断处理代码的入口？
