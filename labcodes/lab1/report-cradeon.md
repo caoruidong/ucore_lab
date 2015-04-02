@@ -1,56 +1,23 @@
 # 练习1
 
-1. 操作系统镜像文件 ucore.img 是如何一步一步生成的?(需要比较详细地解释 Makefile 中
-每一条相关命令和命令参数的含义,以及说明命令导致的结果)
+1. 操作系统镜像文件 ucore.img 是如何一步一步生成的?(需要比较详细地解释 Makefile 中每一条相关命令和命令参数的含义,以及说明命令导致的结果)
 
 + cc kern/init/init.c
-gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o 
-
-obj/kern/init/init.o
+gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o
 + cc kern/libs/readline.c
-gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o 
-
-obj/kern/libs/readline.o
+gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
 + cc kern/libs/stdio.c
-gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/stdio.c -o 
-
-obj/kern/libs/stdio.o
+gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/stdio.c -o obj/kern/libs/stdio.o
 + cc kern/debug/kdebug.c
-gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/kdebug.c -o 
-
-obj/kern/debug/kdebug.o
+gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/kdebug.c -o obj/kern/debug/kdebug.o
 + cc kern/debug/kmonitor.c
-gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/kmonitor.c -o 
-
-obj/kern/debug/kmonitor.o
+gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/kmonitor.c -o obj/kern/debug/kmonitor.o
 + cc kern/debug/panic.c
-gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/panic.c -o 
-
-obj/kern/debug/panic.o
+gcc -Ikern/debug/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/debug/panic.c -o obj/kern/debug/panic.o
 + cc kern/driver/clock.c
-gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector 
-
--Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/clock.c -o 
-
-obj/kern/driver/clock.o
+gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/clock.c -o obj/kern/driver/clock.o
 + cc kern/driver/console.c
-gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector 
-
--Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/console.c -o 
-
-obj/kern/driver/console.o
+gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/console.c -o obj/kern/driver/console.o
 + cc kern/driver/intr.c
 gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector 
 
@@ -140,16 +107,12 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 
 # 练习2
 1. 从CPU加电后执行的第一条指令开始，单步跟踪BIOS的执行。  
-在lab1目录下，执行make debug，打开gdb，输入"target remote :1234"，然后使用si或者ni指令就可
-
-以单步跟踪BIOS了。
+在lab1目录下，执行make debug，打开gdb，输入"target remote :1234"，然后使用si或者ni指令就可以单步跟踪BIOS了。
 
 2. 在初始化位置0x7c00设置实地址断点,测试断点正常。
 测试正常
 
-3. 从0x7c00开始跟踪代码运行,将单步跟踪反汇编得到的代码与bootasm.S和 bootblock.asm进行比较
-
-。
+3. 从0x7c00开始跟踪代码运行,将单步跟踪反汇编得到的代码与bootasm.S和 bootblock.asm进行比较。
 单步跟踪反汇编得到的代码与bootasm.S和bootblock.asm的代码相同。
 
 4. 自己找一个bootloader或内核中的代码位置，设置断点并进行测试。
@@ -175,8 +138,7 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 请完成实验，看看输出是否与上述显示大致一致，并解释最后一行各个数值的含义。  
 与上述显示大致一致。  
 最后一行ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8
-ebp是由于堆栈从0x7c00开始，压入了两个元素，eip指向的是((void (*)(void))(ELFHDR->e_entry & 0xFFFFFF))();的下一条语句即outw(0x8A00, 0x8A00);的地址  
-后边的四个参数是Bootloader起始地址0x7c00开始的几条指令的机器码
+ebp是由于堆栈从0x7c00开始，压入了两个元素;eip指向的是((void (*)(void))(ELFHDR->e_entry & 0xFFFFFF))();的下一条语句即outw(0x8A00, 0x8A00);的地址;后边的四个参数是Bootloader起始地址0x7c00开始的几条指令的机器码
 
 # 练习6
 中断向量表中一个表项占多少字节？其中哪几位代表中断处理代码的入口？
