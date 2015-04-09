@@ -1,7 +1,8 @@
 # 练习1
 
-1. 操作系统镜像文件 ucore.img 是如何一步一步生成的?(需要比较详细地解释 Makefile 中每一条相关命令和命令参数的含义,以及说明命令导致的结果)
+1. 操作系统镜像文件 ucore.img 是如何一步一步生成的?(需要比较详细地解释 Makefile 中每一条相关命令和命令参数的含义,以及说明命令导致的结果)  
 
+```
 + cc kern/init/init.c
 gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o
 + cc kern/libs/readline.c
@@ -19,79 +20,35 @@ gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-p
 + cc kern/driver/console.c
 gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/console.c -o obj/kern/driver/console.o
 + cc kern/driver/intr.c
-gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector 
-
--Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/intr.c -o 
-
-obj/kern/driver/intr.o
+gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/intr.c -o obj/kern/driver/intr.o
 + cc kern/driver/picirq.c
-gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector 
-
--Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/picirq.c -o 
-
-obj/kern/driver/picirq.o
+gcc -Ikern/driver/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/driver/picirq.c -o obj/kern/driver/picirq.o
 + cc kern/trap/trap.c
-gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/trap.c -o 
-
-obj/kern/trap/trap.o
+gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/trap.c -o obj/kern/trap/trap.o
 + cc kern/trap/trapentry.S
-gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/trapentry.S -o 
-
-obj/kern/trap/trapentry.o
+gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/trapentry.S -o obj/kern/trap/trapentry.o
 + cc kern/trap/vectors.S
-gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/vectors.S -o 
-
-obj/kern/trap/vectors.o
+gcc -Ikern/trap/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/trap/vectors.S -o obj/kern/trap/vectors.o
 + cc kern/mm/pmm.c
-gcc -Ikern/mm/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -
-
-Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/mm/pmm.c -o 
-
-obj/kern/mm/pmm.o
+gcc -Ikern/mm/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/mm/pmm.c -o obj/kern/mm/pmm.o
 + cc libs/printfmt.c
-gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  
-
--c libs/printfmt.c -o obj/libs/printfmt.o
+gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/printfmt.c -o obj/libs/printfmt.o
 + cc libs/string.c
-gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  
-
--c libs/string.c -o obj/libs/string.o
+gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/string.c -o obj/libs/string.o
 首先将内核需要的各个.c源文件编译成.o文件
 + ld bin/kernel
-ld -m    elf_i386 -nostdlib -T tools/kernel.ld -o bin/kernel  obj/kern/init/init.o 
-
-obj/kern/libs/readline.o obj/kern/libs/stdio.o obj/kern/debug/kdebug.o 
-
-obj/kern/debug/kmonitor.o obj/kern/debug/panic.o obj/kern/driver/clock.o 
-
-obj/kern/driver/console.o obj/kern/driver/intr.o obj/kern/driver/picirq.o 
-
-obj/kern/trap/trap.o obj/kern/trap/trapentry.o obj/kern/trap/vectors.o obj/kern/mm/pmm.o  
-
-obj/libs/printfmt.o obj/libs/string.o
+ld -m    elf_i386 -nostdlib -T tools/kernel.ld -o bin/kernel  obj/kern/init/init.o obj/kern/libs/readline.o obj/kern/libs/stdio.o obj/kern/debug/kdebug.o obj/kern/debug/kmonitor.o obj/kern/debug/panic.o obj/kern/driver/clock.o obj/kern/driver/console.o obj/kern/driver/intr.o obj/kern/driver/picirq.o obj/kern/trap/trap.o obj/kern/trap/trapentry.o obj/kern/trap/vectors.o obj/kern/mm/pmm.o obj/libs/printfmt.o obj/libs/string.o
 然后将上一步生成的.o文件都链接起来，生成kernel映像
 + cc boot/bootasm.S
-gcc -Iboot/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ 
-
--Os -nostdinc -c boot/bootasm.S -o obj/boot/bootasm.o
+gcc -Iboot/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Os -nostdinc -c boot/bootasm.S -o obj/boot/bootasm.o
 + cc boot/bootmain.c
-gcc -Iboot/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ 
-
--Os -nostdinc -c boot/bootmain.c -o obj/boot/bootmain.o
+gcc -Iboot/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Os -nostdinc -c boot/bootmain.c -o obj/boot/bootmain.o
 + cc tools/sign.c
 gcc -Itools/ -g -Wall -O2 -c tools/sign.c -o obj/sign/tools/sign.o
 gcc -g -Wall -O2 obj/sign/tools/sign.o -o bin/sign
 编译Bootloader需要的bootasm.S和bootmain.c，生成.o文件；同时编译生成bootblock需要的sign工具
 + ld bin/bootblock
-ld -m    elf_i386 -nostdlib -N -e start -Ttext 0x7C00 obj/boot/bootasm.o 
-
-obj/boot/bootmain.o -o obj/bootblock.o
+ld -m    elf_i386 -nostdlib -N -e start -Ttext 0x7C00 obj/boot/bootasm.o obj/boot/bootmain.o -o obj/bootblock.o
 将两个.o文件链接起来生成bootblock.o
 'obj/bootblock.out' size: 472 bytes
 objcopy将bootblock.o中除了符号表的部分拷贝到bootblock.out
@@ -101,6 +58,7 @@ dd if=/dev/zero of=bin/ucore.img count=10000
 dd if=bin/bootblock of=bin/ucore.img conv=notrunc
 dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 创建一个大小为10000块的映像文件，首先全部写成0，然后依次写入Bootloader和内核kernel
+```
 
 2.  一个被系统认为是符合规范的硬盘主引导扇区的特征是什么?
 磁盘主引导扇区只有512字节，且最后两个字节是55 AA。
@@ -137,8 +95,8 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 # 练习5
 请完成实验，看看输出是否与上述显示大致一致，并解释最后一行各个数值的含义。  
 与上述显示大致一致。  
-最后一行ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8
-ebp是由于堆栈从0x7c00开始，压入了两个元素;eip指向的是((void (*)(void))(ELFHDR->e_entry & 0xFFFFFF))();的下一条语句即outw(0x8A00, 0x8A00);的地址;后边的四个参数是Bootloader起始地址0x7c00开始的几条指令的机器码
+最后一行ebp:0x00007bf8 eip:0x00007d68 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8  
+ebp是由于堆栈从0x7c00开始，压入了两个元素;eip指向的是((void (*)(void))(ELFHDR->e_entry & 0xFFFFFF))();的下一条语句即outw(0x8A00, 0x8A00);的地址;后边的四个参数是Bootloader起始地址0x7c00开始的几条指令的机器码.
 
 # 练习6
 中断向量表中一个表项占多少字节？其中哪几位代表中断处理代码的入口？

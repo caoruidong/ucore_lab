@@ -97,60 +97,60 @@ default_alloc_pages(size_t n) {
             for (i = 0; i < n; i++)
 			{				
 				SetPageReserved(p);
+				ClearPageProperty(p);
 				list_del(le);
 				le=lenext;
 				lenext=le->next;
 				p=le2page(le,page_link);
 			}
-			p->property = page->property - n;	
+			if(p->property==0)
+				p->property = page->property - n;	
 			nr_free -= n;		
             return page;
         }
     }
-    
     return NULL;
 }
 
 static void
 default_free_pages(struct Page *base, size_t n) {
-    assert(n > 0);
-   
-    
+    assert(n > 0);  
     list_entry_t *le = list_next(&free_list);
-    struct Page *p=le2page(le,page_link);
+    struct Page *p=NULL;
     while (le != &free_list) {
+		p=le2page(le,page_link);
 		if(p>base)
 			break;
+		le=le->next;
 	}
-    struct Page *basenext=p;
-    p=base;
-    for (; p != base + n; p ++) {
-        //assert(!PageReserved(p) && !PageProperty(p));
-        p->flags = 0;
+    for (p=base; p != base + n; p ++) {
+        ClearPageReserved(p);
+        SetPageProperty(p);
         set_page_ref(p, 0);
-        list_add_before(&(basenext->page_link),&(p->page_link));
+        list_add_before(le,&(p->page_link));
     }
-    
     base->property = n;
-    //SetPageProperty(base);
-    //list_entry_t *le = list_next(&free_list);
-    while (le != &free_list) {
-        p = le2page(le, page_link);
-        le = list_next(le);
-        if (base + n == p) {
-            base->property += p->property;
-            ClearPageProperty(p);
-            //list_del(&(p->page_link));
-        }
-        else if (p + p->property == base) {
-            p->property += base->property;
-            ClearPageProperty(base);
-            //base = p;
-            //list_del(&(p->page_link));
-        }
-    }
+    le=&base->page_link;
+    while((le=le->next)!=&free_list){
+		p=le2page(le,page_link);
+		if(p->property==0)
+			continue;
+		else if(base+base->property==p){
+			base->property+=p->property;
+			p->property=0;
+		}
+	}  
+    le=&base->page_link;
+    while((le=le->prev)!=&free_list){
+		p=le2page(le,page_link);
+		if(p->property==0)
+			continue;	
+		else if(p+p->property==base){
+			p->property+=base->property;
+			base->property=0;
+		}
+	}
     nr_free += n;
-    //list_add(&free_list, &(base->page_link));
 }
 
 static size_t

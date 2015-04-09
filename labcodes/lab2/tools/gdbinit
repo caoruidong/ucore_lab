@@ -1,3 +1,15 @@
-file bin/kernel
+file bin/kernel_nopage
+set print pretty on
 target remote :1234
-break kern_init
+b default_pmm.c:276
+
+define dump_list
+	p &free_area.free_list
+	p free_area.free_list
+    set $_node = free_area.free_list.next
+    while $_node!=&free_area.free_list
+	p $_node
+	p *$_node	
+	set $_node = $_node->next   
+    end
+end
