@@ -1,7 +1,6 @@
-file bin/kernel_nopage
+file bin/kernel
 set print pretty on
 target remote :1234
-b default_pmm.c:276
 
 define dump_list
 	p &free_area.free_list
