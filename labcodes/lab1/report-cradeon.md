@@ -54,13 +54,10 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 # 练习2
 1. 从CPU加电后执行的第一条指令开始，单步跟踪BIOS的执行。  
 在lab1目录下，执行make debug，打开gdb，输入"target remote :1234"，然后使用si或者ni指令就可以单步跟踪BIOS了。
-
 2. 在初始化位置0x7c00设置实地址断点,测试断点正常。  
 测试正常。
-
 3. 从0x7c00开始跟踪代码运行,将单步跟踪反汇编得到的代码与bootasm.S和 bootblock.asm进行比较。  
 单步跟踪反汇编得到的代码与bootasm.S和bootblock.asm的代码相同。
-
 4. 自己找一个bootloader或内核中的代码位置，设置断点并进行测试。  
 测试正常。
 
